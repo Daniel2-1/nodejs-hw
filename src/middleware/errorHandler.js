@@ -1,10 +1,11 @@
 import { HttpError } from 'http-errors';
 
-export const errorHandler = (err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+export const errorHandler = (err, req, res, next) => {
   console.log(err.message);
 
   if (err instanceof HttpError) {
-    res.status(err.status).json({
+    return res.status(err.status).json({
       message: err.message || err.name,
     });
   }

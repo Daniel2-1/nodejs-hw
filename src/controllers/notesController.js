@@ -14,8 +14,8 @@ import createHttpError from 'http-errors';
 // });
 
 export const getAllNotes = async (req, res) => {
-  const note = await Note.find();
-  res.status(200).json(note);
+  const notes = await Note.find();
+  res.status(200).json(notes);
 };
 
 export const getNoteById = async (req, res, next) => {
@@ -28,14 +28,15 @@ export const getNoteById = async (req, res, next) => {
   const note = await Note.findById(noteId);
 
   if (!note) {
-    next(createHttpError(400, 'Note not found'));
+    next(createHttpError(404, 'Note not found'));
+    return;
   }
 
   res.status(200).json(note);
 };
 
-export const createNote = (req, res) => {
-  const note = Note.create(req.body);
+export const createNote = async (req, res) => {
+  const note = await Note.create(req.body);
   res.status(201).json(note);
 };
 
@@ -50,7 +51,8 @@ export const deleteNote = async (req, res, next) => {
   });
 
   if (!note) {
-    next(createHttpError(400, 'Note not found'));
+    next(createHttpError(404, 'Note not found'));
+    return;
   }
 
   res.status(200).json(note);
@@ -68,7 +70,8 @@ export const updateNote = async (req, res, next) => {
   });
 
   if (!note) {
-    next(createHttpError(400, 'Note not found'));
+    next(createHttpError(404, 'Note not found'));
+    return;
   }
 
   res.status(200).json(note);

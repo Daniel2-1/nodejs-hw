@@ -49,7 +49,7 @@ export const getNoteById = async (req, res, next) => {
     return next(createHttpError(400, 'Invalid ID format'));
   }
 
-  const note = await Note.findById({ _id: noteId, userId: req.user._id });
+  const note = await Note.findOne({ _id: noteId, userId: req.user._id });
 
   if (!note) {
     next(createHttpError(404, 'Note not found'));
@@ -94,7 +94,7 @@ export const updateNote = async (req, res, next) => {
     return next(createHttpError(400, 'Invalid ID format'));
   }
 
-  const note = await Note.findByIdAndUpdate(
+  const note = await Note.findOneAndUpdate(
     { _id: noteId, userId: req.user._id },
     req.body,
     {
